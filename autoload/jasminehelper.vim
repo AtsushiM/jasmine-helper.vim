@@ -80,7 +80,8 @@ function! jasminehelper#JasmineAdd(...)
 
     if dir != ''
         let dir = dir.'spec/'
-        let cmd = 'cp -r _template '
+        let cmd1 = 'cp -r _template '
+        let cmd2 = 'rm -rf '
         let makename = expand('%:r')
 
         if a:0 != 0
@@ -88,7 +89,8 @@ function! jasminehelper#JasmineAdd(...)
         endif
 
         if makename != ''
-            let cmd = cmd.makename
+            let cmd1 = cmd1.makename
+            let cmd2 = cmd2.makename.'/.*'
         else
             echo 'no target dircotry.'
             finish
@@ -99,10 +101,12 @@ function! jasminehelper#JasmineAdd(...)
         exec 'silent cd '.dir
 
         if !isdirectory(makename)
-            call system(cmd)
-            echo cmd
+            call system(cmd1)
+            call system(cmd2)
 
             call jasminehelper#JasmineClassNameReplace(makename)
+
+            exec 'vs '.makename.'/test.js'
         else
             echo 'already maked "'.makename.'" directory.'
         endif
