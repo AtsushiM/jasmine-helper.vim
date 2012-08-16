@@ -1,0 +1,25 @@
+:JasmineInit
+現在ディレクトリにspecディレクトリを作成します。
+specディレクトリ内にはjasmineのstandalone版に必要なファイル一式が揃っています
+
+
+:JasmineAdd ClassName
+specディレクトリ内に引数ClassNameのディレクトリを作成し、
+index.html, test.jsを生成します。
+後述するJasmineTemplateで生成されるファイルの形式を変更可能です。
+
+ClassNameは省略可能であり、省略した場合、
+現在のファイル名から拡張子を除いたものが指定されたことになります。
+
+
+:JasmineTemplate
+生成されたspecディレクトリ内にある_template/test.jsを開きます。
+このtest.jsはJasmineAddコマンドで生成されるtest.jsのテンプレートになります。
+※_template/index.htmlも同じくJasmineAddコマンドで生成されるindex.htmlのテンプレートです。
+
+それぞれのテンプレート中にある%CLASS%, %CLASS_LOW%は
+%CLASS% = JasmineAddの引数ClassName
+%CLASS_LOW% = JasmineAddの引数ClassNameを全て小文字にしたもの
+以上、それぞれに置換されます。
+
+

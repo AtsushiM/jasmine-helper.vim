@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Jasmine Test Runner</title>
+  <link rel="stylesheet" type="text/css" href="../lib/jasmine-1.2.0.rc3/jasmine.css">
+  <script type="text/javascript" src="../lib/jasmine-1.2.0.rc3/jasmine.js"></script>
+  <script type="text/javascript" src="../lib/jasmine-1.2.0.rc3/jasmine-html.js"></script>
+</head>
+<body>
+
+<!-- include spec files here... -->
+<script type="text/javascript" src="../spec/SpecHelper.js"></script>
+
+<!-- include test target -->
+<script src="../../js/enchant.min.js"></script>
+<script src="../../js/src/init.js"></script>
+
+<script src="../../js/src/CustomSprite.js"></script>
+<script src="../../js/src/DisplayLock.js"></script>
+<script src="../../js/src/XY2Blockpoint.js"></script>
+<script src="../../js/src/HashController.js"></script>
+<script src="../../js/src/DataStore.js"></script>
+
+<script src="../../js/src/Avatar.js"></script>
+<script src="../../js/src/AvatarMoveController.js"></script>
+<script src="../../js/src/Deferred.js"></script>
+<script src="../../js/src/Dice.js"></script>
+<script src="../../js/src/Dice.CheatDice.js"></script>
+<script src="../../js/src/GameStatus.js"></script>
+<script src="../../js/src/Layer.js"></script>
+<script src="../../js/src/Score.js"></script>
+<script src="../../js/src/ShakeMobile.js"></script>
+<script src="../../js/src/Sound.js"></script>
+<script src="../../js/src/SquareResult.js"></script>
+<script src="../../js/src/SquareResultController.js"></script>
+<script src="../../js/src/SquareResult.Next2.js"></script>
+<script src="../../js/src/SquareResult.Prev2.js"></script>
+<script src="../../js/src/SquareResult.Home.js"></script>
+<script src="../../js/src/SugorokuMap.js"></script>
+
+<!-- 実行 -->
+<!-- <script src="../js/sugoroku.js"></script> -->
+
+<!-- include test -->
+<!-- enchant初期化のため、最初にテストする必要あり -->
+<script type="text/javascript" src="../init/test.js"></script>
+
+<script src="../CustomSprite/test.js"></script>
+<script src="../DisplayLock/test.js"></script>
+<script src="../XY2Blockpoint/test.js"></script>
+<script src="../HashController/test.js"></script>
+<script src="../DataStore/test.js"></script>
+
+<script src="../Avatar/test.js"></script>
+<script src="../AvatarMoveController/test.js"></script>
+<script src="../Deferred/test.js"></script>
+<script src="../Dice/test.js"></script>
+<script src="../Dice.CheatDice/test.js"></script>
+<script src="../GameStatus/test.js"></script>
+<script src="../Layer/test.js"></script>
+<script src="../Score/test.js"></script>
+<script src="../ShakeMobile/test.js"></script>
+<script src="../Sound/test.js"></script>
+<script src="../SquareResult/test.js"></script>
+<script src="../SquareResultController/test.js"></script>
+<script src="../SquareResult.Home/test.js"></script>
+<script src="../SquareResult.Next2/test.js"></script>
+<script src="../SquareResult.Prev2/test.js"></script>
+<script src="../SugorokuMap/test.js"></script>
+
+<script type="text/javascript">
+  jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+  jasmine.getEnv().execute();
+  // var cl = document.querySelector('.jasmine_reporter').className;
+  // document.querySelector('.jasmine_reporter').className = cl + ' show-passed';
+</script>
+
+</body>
+</html>
