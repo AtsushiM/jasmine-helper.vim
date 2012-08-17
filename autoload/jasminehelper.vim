@@ -8,7 +8,8 @@ set cpo&vim
 
 function! jasminehelper#dirCheck(target)
     let i = 0
-    let dir = getcwd().'/'
+    " let dir = getcwd().'/'
+    let dir = expand('%:p:h').'/'
 
     while i < 5
         if !isdirectory(dir.'/'.a:target)
@@ -54,6 +55,11 @@ function! jasminehelper#JasmineClassNameReplace(className)
         exec 'silent cd '.a:className
 
         let classNameLow = tolower(a:className)
+        let check = split(classNameLow, '\.')
+        if len(check) != 1
+            let classNameLow = check[len(check) - 1]
+        endif
+
         let targets = ['index.html', 'test.js']
 
         for i in targets

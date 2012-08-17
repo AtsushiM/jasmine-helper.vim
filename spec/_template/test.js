@@ -17,6 +17,17 @@ describe('%CLASS%は', function() {
     //     expect(%CLASS_LOW%1).toBe(%CLASS_LOW%2);
     // });
 
+    // it('XXXの機能をすべて持つ', function() {
+    //     var org = new XXX(),
+    //         %CLASS_LOW% = new %CLASS%();
+
+    //     for (var i in org) {
+    //         if (org.hasOwnProperty(i)) {
+    //             expect(%CLASS_LOW%[i]).toBeDefined();
+    //         }
+    //     }
+    // });
+
     it('zzzである', function() {
         expect(0).toEqual(1);
     });
