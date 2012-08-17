@@ -26,5 +26,6 @@ let g:jasmine_helper_dir_spec_template_dir = g:jasmine_helper_spec_dir.'_templat
 command! JasmineInit call jasminehelper#JasmineInit()
 command! -nargs=* JasmineAdd call jasminehelper#JasmineAdd(<f-args>)
 command! JasmineTemplate call jasminehelper#JasmineTemplate()
+command! JasmineListUpJS call jasminehelper#JasmineListUpJS()
 
 let &cpo = s:save_cpo

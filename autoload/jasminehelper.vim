@@ -75,6 +75,38 @@ function! jasminehelper#JasmineClassNameReplace(className)
     endif
 endfunction
 
+function! jasminehelper#JasmineListUpJS()
+    let orgdir = getcwd()
+    let dir = jasminehelper#dirCheck('spec')
+
+    if dir != ''
+        let dir = dir.'spec/'
+
+        exec 'silent cd '.dir
+
+        let list = split(substitute("".system('ls -F | grep /'), "\n", "", 'g'), '/')
+
+        let listClass = []
+        let listTest = []
+        let testFile = []
+        let testPath = []
+        for listi in list
+            if listi != '_ALL' && listi != '_common' && listi != '_template' && listi != 'lib'
+                let listTest = add(listTest, jasminehelper#JasmineReadJSTag('../'.listi.'/test.js'))
+
+                let testFile = readfile(listi.'/test.js')
+                let testPath = matchlist(testFile[0], '\v(.{-})"(.{-})"(.*)')
+                let listClass = add(listClass, jasminehelper#JasmineReadJSTag(testPath[2]))
+            endif
+        endfor
+        call writefile(extend(listClass, listTest), 'list.js')
+
+        exec 'silent cd '.orgdir
+    else
+        echo 'not found "spec" directory.'
+    endif
+endfunction
+
 function! jasminehelper#JasmineAdd(...)
     let dir = jasminehelper#dirCheck('spec')
 
@@ -111,11 +143,17 @@ function! jasminehelper#JasmineAdd(...)
             echo 'already maked "'.makename.'" directory.'
         endif
 
+        call jasminehelper#JasmineListUpJS()
+
         exec 'silent cd '.orgdir
 
     else
         echo 'no find "spec" directory.'
     endif
+endfunction
+
+function! jasminehelper#JasmineReadJSTag(name)
+    return 'document.write(''<script type="text/javascript" src="'.a:name.'"></script>'')'
 endfunction
 
 function! jasminehelper#JasmineTemplate()
