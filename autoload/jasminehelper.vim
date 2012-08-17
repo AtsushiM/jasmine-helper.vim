@@ -86,20 +86,26 @@ function! jasminehelper#JasmineListUpJS()
 
         let list = split(substitute("".system('ls -F | grep /'), "\n", "", 'g'), '/')
 
+        let listBase = []
         let listClass = []
         let listTest = []
         let testFile = []
         let testPath = []
         for listi in list
             if listi != '_ALL' && listi != '_common' && listi != '_template' && listi != 'lib'
-                let listTest = add(listTest, jasminehelper#JasmineReadJSTag('../'.listi.'/test.js'))
+                let listBase = add(listBase, listi.'\n\')
+                let listTest = add(listTest, jasminehelper#JasmineReadJSTag('../'.listi.'/test.js').'\n\')
 
                 let testFile = readfile(listi.'/test.js')
                 let testPath = matchlist(testFile[0], '\v(.{-})"(.{-})"(.*)')
-                let listClass = add(listClass, jasminehelper#JasmineReadJSTag(testPath[2]))
+                let listClass = add(listClass, jasminehelper#JasmineReadJSTag(testPath[2]).'\n\')
             endif
         endfor
-        call writefile(extend(listClass, listTest), 'list.js')
+
+        let listBase = extend(extend(['<script type="template" id="jasmineBaseList">\'], listBase), ['</script>\'])
+        let listClass = extend(extend(['<script type="template" id="jasmineClassList">\'], listClass), ['</script>\'])
+        let listTest = extend(extend(['<script type="template" id="jasmineTestList">\'], listTest), ['</script>\'])
+        call writefile(extend(extend(['document.write(''\'],extend(listBase, extend(listClass, listTest))), ["');"]), 'list.js')
 
         exec 'silent cd '.orgdir
     else
@@ -153,7 +159,8 @@ function! jasminehelper#JasmineAdd(...)
 endfunction
 
 function! jasminehelper#JasmineReadJSTag(name)
-    return 'document.write(''<script type="text/javascript" src="'.a:name.'"></script>'')'
+    " return 'document.write(''<script type="text/javascript" src="'.a:name.'"></script>'')'
+    return a:name
 endfunction
 
 function! jasminehelper#JasmineTemplate()

@@ -13,11 +13,36 @@
 <!-- include spec files here... -->
 <script type="text/javascript" src="../_common/SpecHelper.js"></script>
 
-<!-- include Classes -->
-<script src="../../js/%CLASS%.js"></script>
+<!-- include filelist -->
+<script src="../list.js"></script>
+<script type="text/javascript">
+function $(selector) {
+    return document.querySelector(selector);
+}
 
-<!-- include Test -->
-<script type="text/javascript" src="test.js"></script>
+var classList = $('#jasmineClassList').innerHTML.split('\n'),
+    testList = $('#jasmineTestList').innerHTML.split('\n');
+</script>
+
+<!-- include Classes -->
+<script type="text/javascript">
+    for (var i in classList) {
+        // 排除条件
+        /* if (classList[i] !== '../../js/src/init.js') { */
+            document.write('<script src="' + classList[i] + '"><\/script>');
+        /* } */
+    }
+</script>
+
+<!-- include test -->
+<script type="text/javascript">
+    for (var i in testList) {
+        // 排除条件
+        /* if (testList[i] !== '../init/test.js') { */
+            document.write('<script src="' + testList[i] + '"><\/script>');
+        /* } */
+    }
+</script>
 
 <script type="text/javascript">
   jasmine.getEnv().addReporter(new jasmine.TrivialReporter());

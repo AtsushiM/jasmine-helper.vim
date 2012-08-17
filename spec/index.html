@@ -5,34 +5,24 @@
     <title></title>
 </head>
 <body>
-    <ul>
-        <li><a href="./_ALL">ALL</a></li>
-        <li><a href="./_ALL/min.html">ALL(minimize)</a></li>
+<script type="text/javascript">
+    document.write('<ul>');
+    //固定で表示させるリスト
+    listLink('_ALL', 'ALL');
 
-        <li><a href="./init">init</a></li>
+    for (var i in baseList) {
+        if (baseList[i]) {
+            listLink(baseList[i]);
+        }
+    }
+    document.write('<\/ul>');
 
-        <li><a href="./CustomSprite">CustomSprite</a></li>
-        <li><a href="./DisplayLock">DisplayLock</a></li>
-        <li><a href="./XY2Blockpoint">XY2Blockpoint</a></li>
-        <li><a href="./HashController">HashController</a></li>
-        <li><a href="./DataStore">DataStore</a></li>
-
-        <li><a href="./Avatar">Avatar</a></li>
-        <li><a href="./AvatarMoveController">AvatarMoveController</a></li>
-        <li><a href="./Deferred">Deferred</a></li>
-        <li><a href="./Dice">Dice</a></li>
-        <li><a href="./Dice.CheatDice">Dice.CheatDice</a></li>
-        <li><a href="./GameStatus">GameStatus</a></li>
-        <li><a href="./Layer">Layer</a></li>
-        <li><a href="./Score">Score</a></li>
-        <li><a href="./ShakeMobile">ShakeMobile</a></li>
-        <li><a href="./Sound">Sound</a></li>
-        <li><a href="./SquareResult">SquareResult</a></li>
-        <li><a href="./SquareResult.Next2">SquareResult.Next2</a></li>
-        <li><a href="./SquareResult.Prev2">SquareResult.Prev2</a></li>
-        <li><a href="./SquareResult.Home">SquareResult.Home</a></li>
-        <li><a href="./SquareResultController">SquareResultController</a></li>
-        <li><a href="./SugorokuMap">SugorokuMap</a></li>
-    </ul>
+    function listLink(path, view) {
+        if (!view) {
+            view = path;
+        }
+        document.write('<li><a href="' + path + '">' + view + '<\/a><\/li>');
+    }
+</script>
 </body>
 </html>
