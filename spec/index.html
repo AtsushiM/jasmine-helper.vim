@@ -18,11 +18,11 @@ var baseList = $('#jasmineBaseList').innerHTML.split('\n');
 <ul>
 <script type="text/javascript">
     //固定で表示させるリスト
-    listLink('_ALL', 'ALL');
+    listLink('_ALL/index.html', 'ALL');
 
     for (var i in baseList) {
         if (baseList[i]) {
-            listLink(baseList[i]);
+            listLink(baseList[i] + '/index.html', baseList[i]);
         }
     }
 

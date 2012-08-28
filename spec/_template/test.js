@@ -4,7 +4,7 @@ describe('%CLASS%は', function() {
 
     beforeEach(function() {
         // init
-        %CLASS_LOW% = new %CLASS%();
+        %CLASS_LOW% = new Global.%CLASS%();
     });
     afterEach(function() {
         // clear
