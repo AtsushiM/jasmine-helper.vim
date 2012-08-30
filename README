@@ -3,7 +3,8 @@
 au BufEnter * execute ":lcd ".expand("%:p:h")
 
 :JasmineInit
-現在ディレクトリにspecディレクトリを作成します。
+現在ディレクトリから上に検索を開始し、
+jsディレクトリが存在する階層にspecディレクトリを作成します。
 specディレクトリ内にはjasmineのstandalone版に必要なファイル一式が揃っています
 
 
