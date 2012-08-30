@@ -1,3 +1,7 @@
+!! このプラグインはまだ作りかけです。 !!
+!! 次のコマンド,もしくは同じ様な動作をするものがvimrcに書かれている事を想定した作りになっています。 !!
+au BufEnter * execute ":lcd ".expand("%:p:h")
+
 :JasmineInit
 現在ディレクトリにspecディレクトリを作成します。
 specディレクトリ内にはjasmineのstandalone版に必要なファイル一式が揃っています
