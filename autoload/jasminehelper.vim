@@ -8,7 +8,6 @@ set cpo&vim
 
 function! jasminehelper#dirCheck(target)
     let i = 0
-    " let dir = getcwd().'/'
     let dir = expand('%:p:h').'/'
 
     while i < 5
@@ -39,7 +38,7 @@ function! jasminehelper#JasmineInit()
     let dir = jasminehelper#dirCheck('js')
 
     if dir != ''
-        let orgdir = getcwd().'/'
+        let orgdir = expand('%:p:h').'/'
 
         exec 'silent cd '.dir
         call jasminehelper#JasmineSpecCopy()
@@ -82,7 +81,7 @@ function! jasminehelper#JasmineClassNameReplace(className)
 endfunction
 
 function! jasminehelper#JasmineListUpJS()
-    let orgdir = getcwd()
+    let orgdir = expand('%:p:h')
     let dir = jasminehelper#dirCheck('spec')
 
     if dir != ''
@@ -140,7 +139,7 @@ function! jasminehelper#JasmineAdd(...)
             finish
         endif
 
-        let orgdir = getcwd().'/'
+        let orgdir = expand('%:p:h').'/'
 
         exec 'silent cd '.dir
 
