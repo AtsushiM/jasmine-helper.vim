@@ -99,11 +99,11 @@ function! jasminehelper#JasmineListUpJS()
         for listi in list
             if listi != '_ALL' && listi != '_common' && listi != '_template' && listi != 'lib'
                 let listBase = add(listBase, listi.'\n\')
-                let listTest = add(listTest, jasminehelper#JasmineReadJSTag('../'.listi.'/test.js').'\n\')
+                let listTest = add(listTest, '../'.listi.'/test.js'.'\n\')
 
                 let testFile = readfile(listi.'/test.js')
                 let testPath = matchlist(testFile[0], '\v(.{-})"(.{-})"(.*)')
-                let listClass = add(listClass, jasminehelper#JasmineReadJSTag(testPath[2]).'\n\')
+                let listClass = add(listClass, testPath[2].'\n\')
             endif
         endfor
 
@@ -161,11 +161,6 @@ function! jasminehelper#JasmineAdd(...)
     else
         echo 'no find "spec" directory.'
     endif
-endfunction
-
-function! jasminehelper#JasmineReadJSTag(name)
-    " return 'document.write(''<script type="text/javascript" src="'.a:name.'"></script>'')'
-    return a:name
 endfunction
 
 function! jasminehelper#JasmineTemplate()
