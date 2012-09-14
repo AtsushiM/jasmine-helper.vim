@@ -103,7 +103,8 @@ function! jasminehelper#JasmineListUpJS()
 
     exec 'silent cd '.dir
 
-    let list = split(substitute("".system('ls -F | grep /'), "\n", "", 'g'), '/')
+    " let list = split(substitute("".system('ls -F | grep /'), "\n", "", 'g'), '/')
+    let list = split(glob("*", "\n"))
 
     let listBase = []
     let listClass = []
