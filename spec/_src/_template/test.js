@@ -1,4 +1,4 @@
-/* Class: "../../js/%CLASS%.js" */
+/* Class: "%CLASS_PATH%" */
 describe('%CLASS%は', function() {
     var %CLASS_LOW%;
 

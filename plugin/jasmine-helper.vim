@@ -23,6 +23,13 @@ let g:jasmine_helper_dir = expand('<sfile>:p:h:h').'/'
 let g:jasmine_helper_dir_spec_dir = g:jasmine_helper_dir.'spec/'
 let g:jasmine_helper_dir_spec_template_dir = g:jasmine_helper_spec_dir.'_template/'
 
+if !exists("g:jasmine_helper_src_js_dirname")
+    let g:jasmine_helper_src_js_dirname = 'js'
+endif
+if !exists("g:jasmine_helper_test_js_dirname")
+    let g:jasmine_helper_test_js_dirname = 'spec'
+endif
+
 command! JasmineInit call jasminehelper#JasmineInit()
 command! -nargs=* JasmineAdd call jasminehelper#JasmineAdd(<f-args>)
 command! JasmineTemplate call jasminehelper#JasmineTemplate()

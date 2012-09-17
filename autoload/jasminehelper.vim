@@ -30,10 +30,10 @@ function! jasminehelper#dirCheck(target)
 endfunction
 
 function! jasminehelper#JasmineSpecCopy()
-    let createspec = getcwd().'/spec'
+    let createspec = getcwd().'/'.g:jasmine_helper_test_js_dirname
 
     if isdirectory(createspec)
-        echo 'already spec init.'
+        echo 'already '.g:jasmine_helper_test_js_dirname.' init.'
         return
     endif
 
@@ -57,7 +57,7 @@ function! jasminehelper#JasmineInit()
     exec 'silent cd '.orgdir
 endfunction
 
-function! jasminehelper#JasmineClassNameReplace(className)
+function! jasminehelper#JasmineClassNameReplace(className, classPath)
     let orgdir = getcwd()
     if !isdirectory(a:className)
         echo 'not find "'.a:className.'" directory.'
@@ -79,6 +79,7 @@ function! jasminehelper#JasmineClassNameReplace(className)
         let target_replace = []
 
         for target_i in target
+            let target_i = substitute(target_i, '%CLASS_PATH%', a:classPath, 'g')
             let target_i = substitute(target_i, '%CLASS%', a:className, 'g')
             let target_i = substitute(target_i, '%CLASS_LOW%', classNameLow, 'g')
             let target_replace = add(target_replace, target_i)
@@ -90,16 +91,31 @@ function! jasminehelper#JasmineClassNameReplace(className)
     exec 'silent cd '.orgdir
 endfunction
 
+function! jasminehelper#JasmineTestPathReplace(testPath)
+    let file = expand('%:p')
+    let target = readfile(file)
+    let target_replace = []
+
+    for target_i in target
+        let target_i = substitute(target_i, '%JASMINE_TEST_PATH%', a:testPath, 'g')
+        let target_replace = add(target_replace, target_i)
+    endfor
+
+    call writefile(target_replace, file)
+    exec 'e '.file
+    return file
+endfunction
+
 function! jasminehelper#JasmineListUpJS()
     let orgdir = expand('%:p:h')
-    let dir = jasminehelper#dirCheck('spec')
+    let dir = jasminehelper#dirCheck(g:jasmine_helper_test_js_dirname)
 
     if dir == ''
-        echo 'not found "spec" directory.'
+        echo 'not found "'.g:jasmine_helper_test_js_dirname.'" directory.'
         return
     endif
 
-    let dir = dir.'spec/_src'
+    let dir = dir.g:jasmine_helper_test_js_dirname.'/_src'
 
     exec 'silent cd '.dir
 
@@ -131,14 +147,14 @@ function! jasminehelper#JasmineListUpJS()
 endfunction
 
 function! jasminehelper#JasmineAdd(...)
-    let dir = jasminehelper#dirCheck('spec')
+    let dir = jasminehelper#dirCheck(g:jasmine_helper_test_js_dirname)
 
     if dir == ''
-        echo 'no find "spec" directory.'
+        echo 'no find "'.g:jasmine_helper_test_js_dirname.'" directory.'
         return
     endif
 
-    let dir = dir.'spec/_src'
+    let dir = dir.g:jasmine_helper_test_js_dirname.'/_src'
     let cmd1 = 'cp -r _template '
     let cmd2 = 'rm -rf '
     let makename = expand('%:r')
@@ -157,6 +173,8 @@ function! jasminehelper#JasmineAdd(...)
         return
     endif
 
+    let srcfile = jasminehelper#JasmineTestPathReplace(dir.'/'.makename.'/test.js')
+
     let cmd1 = cmd1.makename
     let cmd2 = cmd2.makename.'/.*'
     let orgdir = expand('%:p:h').'/'
@@ -166,7 +184,7 @@ function! jasminehelper#JasmineAdd(...)
     call system(cmd1)
     call system(cmd2)
 
-    call jasminehelper#JasmineClassNameReplace(makename)
+    call jasminehelper#JasmineClassNameReplace(makename, srcfile)
 
     exec 'vs '.makename.'/test.js'
 
@@ -176,8 +194,8 @@ function! jasminehelper#JasmineAdd(...)
 endfunction
 
 function! jasminehelper#JasmineTemplate()
-    let dir = jasminehelper#dirCheck('spec')
-    let tempdir = dir.'spec/src/_template'
+    let dir = jasminehelper#dirCheck(g:jasmine_helper_test_js_dirname)
+    let tempdir = dir.g:jasmine_helper_test_js_dirname.'/src/_template'
 
     if dir == '' || !isdirectory(tempdir)
         echo 'not find "'.tempdir.'" directory'

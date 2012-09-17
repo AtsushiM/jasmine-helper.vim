@@ -16,15 +16,19 @@ index.html, test.jsを生成します。
 ClassNameは省略可能であり、省略した場合、
 現在のファイル名から拡張子を除いたものが指定されたことになります。
 
+またjsファイル内に
+%JASMINE_TEST_PATH%
+の文字列が存在していた場合、テスト用jsファイルへのパスに置換されます。
+
 
 :JasmineTemplate
 生成されたspecディレクトリ内にある_template/test.jsを開きます。
 このtest.jsはJasmineAddコマンドで生成されるtest.jsのテンプレートになります。
 ※_template/index.htmlも同じくJasmineAddコマンドで生成されるindex.htmlのテンプレートです。
 
-それぞれのテンプレート中にある%CLASS%, %CLASS_LOW%は
+それぞれのテンプレート中にある%~%は
+%CLASS_PATH% = 対応するjsへのパス
 %CLASS% = JasmineAddの引数ClassName
 %CLASS_LOW% = JasmineAddの引数ClassNameを全て小文字にしたもの
 以上、それぞれに置換されます。
-
 
