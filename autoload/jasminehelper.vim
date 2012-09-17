@@ -29,6 +29,48 @@ function! jasminehelper#dirCheck(target)
     return dir
 endfunction
 
+function! jasminehelper#relativePath(base, target)
+    let baseAry = split(a:base, '/')
+    let targetAry = split(a:target, '/')
+
+    let baseMaxLen = len(baseAry)
+    let targetMaxLen = len(targetAry)
+    let i = 0
+
+    while i < baseMaxLen
+        if baseAry[i] == targetAry[i]
+            let i = i + 1
+        else
+            break
+        endif
+    endwhile
+
+    let diff = baseMaxLen - i
+
+    if diff == 0
+        return baseAry[baseMaxLen - 1]
+    endif
+
+    let path = ''
+    let j = diff
+
+    while j > 1
+        let path = '../'.path
+
+        let j = j - 1
+    endwhile
+
+    while i < targetMaxLen - 1
+        let path = path.targetAry[i].'/'
+
+        let i = i + 1
+    endwhile
+
+    let path = path.targetAry[i]
+
+    return path
+endfunction
+
 function! jasminehelper#JasmineSpecCopy()
     let createspec = getcwd().'/'.g:jasmine_helper_test_js_dirname
 
@@ -79,7 +121,7 @@ function! jasminehelper#JasmineClassNameReplace(className, classPath)
         let target_replace = []
 
         for target_i in target
-            let target_i = substitute(target_i, '%CLASS_PATH%', a:classPath, 'g')
+            let target_i = substitute(target_i, '%CLASS_PATH%', jasminehelper#relativePath(fnamemodify('test.js', ':p'), a:classPath), 'g')
             let target_i = substitute(target_i, '%CLASS%', a:className, 'g')
             let target_i = substitute(target_i, '%CLASS_LOW%', classNameLow, 'g')
             let target_replace = add(target_replace, target_i)
@@ -97,7 +139,7 @@ function! jasminehelper#JasmineTestPathReplace(testPath)
     let target_replace = []
 
     for target_i in target
-        let target_i = substitute(target_i, '%JASMINE_TEST_PATH%', a:testPath, 'g')
+        let target_i = substitute(target_i, '%JASMINE_TEST_PATH%', jasminehelper#relativePath(file, a:testPath), 'g')
         let target_replace = add(target_replace, target_i)
     endfor
 
