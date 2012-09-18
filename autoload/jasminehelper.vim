@@ -131,7 +131,7 @@ function! jasminehelper#JasmineClassNameReplace(basedir, className, classPath)
     endif
 
     let targets = ['index.html', 'test.js']
-    let jasminelibpath = jasminehelper#relativePath(fnamemodify('index.html', ':p'), a:basedir)
+    let jasminelibpath = matchlist(jasminehelper#relativePath(fnamemodify('index.html', ':p'), a:basedir.'/'), '\v(.*)/')[1]
     let testjspath = jasminehelper#relativePath(fnamemodify('test.js', ':p'), a:classPath)
 
     for i in targets
@@ -259,7 +259,7 @@ function! jasminehelper#JasmineAdd(...)
     call system(cmd1)
     call system(cmd2)
 
-    call jasminehelper#JasmineClassNameReplace(basedir, makename, srcfile)
+    call jasminehelper#JasmineClassNameReplace(fnamemodify(basedir, ':p'), makename, srcfile)
 
     exec 'vs '.makename.'/test.js'
 
