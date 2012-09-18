@@ -6,12 +6,29 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+function! jasminehelper#removePathDot(path)
+    let pathary = split(a:path, '/', 1)
+    let retary = []
+
+    for i in pathary
+        if i != '..'
+            let retary = add(retary, i)
+        else
+            unlet retary[-1]
+        endif
+    endfor
+
+    let path = join(retary, '/')
+
+    return path
+endfunction
+
 function! jasminehelper#dirCheck(target)
     let i = 0
     let dir = expand('%:p:h').'/'
     let flg = 0
 
-    while i < 5
+    while i < 10
         if !isdirectory(dir.'/'.a:target)
             let dir = dir.'../'
         else
@@ -81,7 +98,6 @@ function! jasminehelper#JasmineSpecCopy()
 
     let cmd = 'cp -r '.g:jasmine_helper_dir_spec_dir.' '.createspec
     call system(cmd)
-    echo cmd
 endfunction
 
 function! jasminehelper#JasmineInit()
@@ -162,7 +178,7 @@ function! jasminehelper#JasmineListUpJS()
     exec 'silent cd '.dir
 
     " let list = split(substitute("".system('ls -F | grep /'), "\n", "", 'g'), '/')
-    let list = split(glob("*", "\n"))
+    let list = split(glob("**/*/", "\n"))
 
     let listBase = []
     let listClass = []
@@ -170,19 +186,21 @@ function! jasminehelper#JasmineListUpJS()
     let testFile = []
     let testPath = []
     for listi in list
-        if listi != '_template'
-            let listBase = add(listBase, listi.'\n\')
-            let listTest = add(listTest, '../_src/'.listi.'/test.js'.'\n\')
+        if listi != '_template/'
+            if filereadable(listi.'test.js')
+                let listBase = add(listBase, listi.'\n\')
+                let listTest = add(listTest, '../_src/'.listi.'test.js'.'\n\')
 
-            let testFile = readfile(listi.'/test.js')
-            let testPath = matchlist(testFile[0], '\v(.{-})"(.{-})"(.*)')
-            let listClass = add(listClass, testPath[2].'\n\')
+                let testFile = readfile(listi.'test.js')
+                let testPath = matchlist(testFile[0], '\v(.{-})"(.{-})"(.*)')
+                let listClass = add(listClass, testPath[2].'\n\')
+            endif
         endif
     endfor
 
-    let listBase = extend(extend(['<script type="template" id="jasmineBaseList">\'], listBase), ['</script>\'])
-    let listClass = extend(extend(['<script type="template" id="jasmineClassList">\'], listClass), ['</script>\'])
-    let listTest = extend(extend(['<script type="template" id="jasmineTestList">\'], listTest), ['</script>\'])
+    let listBase = extend(extend(['<script type="text/template" id="jasmineBaseList">\'], listBase), ['</script>\'])
+    let listClass = extend(extend(['<script type="text/template" id="jasmineClassList">\'], listClass), ['</script>\'])
+    let listTest = extend(extend(['<script type="text/template" id="jasmineTestList">\'], listTest), ['</script>\'])
     call writefile(extend(extend(['document.write(''\'],extend(listBase, extend(listClass, listTest))), ["');"]), '../list.js')
 
     exec 'silent cd '.orgdir
@@ -197,9 +215,12 @@ function! jasminehelper#JasmineAdd(...)
     endif
 
     let dir = dir.g:jasmine_helper_test_js_dirname.'/_src'
-    let cmd1 = 'cp -r _template '
+    let cmd1 = 'cp -r '.dir.'/_template '
     let cmd2 = 'rm -rf '
     let makename = expand('%:r')
+    let orgdir = getcwd()
+
+    let srcpath = matchlist(expand('%:p:h').'/', '\v(.*)/'.g:jasmine_helper_src_js_dirname.'/(.*)')[2]
 
     if a:0 != 0
         let makename = a:000[0]
@@ -210,16 +231,24 @@ function! jasminehelper#JasmineAdd(...)
         return
     endif
 
-    if isdirectory(makename)
-        echo 'already maked "'.makename.'" directory.'
+    if srcpath != ''
+        let dir = dir.'/'.srcpath
+    endif
+
+    let dir = jasminehelper#removePathDot(dir)
+    let dir = matchlist(dir, '\v(.*)/$')[1]
+
+    if isdirectory(dir)
+        echo 'already maked "'.dir.'/'.makename.'" directory.'
         return
     endif
 
     let srcfile = jasminehelper#JasmineTestPathReplace(dir.'/'.makename.'/test.js')
 
+    call mkdir(dir, 'p')
+
     let cmd1 = cmd1.makename
     let cmd2 = cmd2.makename.'/.*'
-    let orgdir = expand('%:p:h').'/'
 
     exec 'silent cd '.dir
 
