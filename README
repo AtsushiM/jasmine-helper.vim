@@ -23,6 +23,7 @@ ClassNameは省略可能であり、省略した場合、
 ※_template/index.htmlも同じくJasmineAddコマンドで生成されるindex.htmlのテンプレートです。
 
 それぞれのテンプレート中にある%~%は
+%BASE_PATH% = specディレクトリへのパス
 %CLASS_PATH% = 対応するjsへのパス
 %CLASS% = JasmineAddの引数ClassName
 %CLASS_LOW% = JasmineAddの引数ClassNameを全て小文字にしたもの

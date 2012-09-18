@@ -115,7 +115,7 @@ function! jasminehelper#JasmineInit()
     exec 'silent cd '.orgdir
 endfunction
 
-function! jasminehelper#JasmineClassNameReplace(className, classPath)
+function! jasminehelper#JasmineClassNameReplace(basedir, className, classPath)
     let orgdir = getcwd()
     if !isdirectory(a:className)
         echo 'not find "'.a:className.'" directory.'
@@ -131,13 +131,16 @@ function! jasminehelper#JasmineClassNameReplace(className, classPath)
     endif
 
     let targets = ['index.html', 'test.js']
+    let jasminelibpath = jasminehelper#relativePath(fnamemodify('index.html', ':p'), a:basedir)
+    let testjspath = jasminehelper#relativePath(fnamemodify('test.js', ':p'), a:classPath)
 
     for i in targets
         let target = readfile(i)
         let target_replace = []
 
         for target_i in target
-            let target_i = substitute(target_i, '%CLASS_PATH%', jasminehelper#relativePath(fnamemodify('test.js', ':p'), a:classPath), 'g')
+            let target_i = substitute(target_i, '%BASE_PATH%', jasminelibpath, 'g')
+            let target_i = substitute(target_i, '%CLASS_PATH%', testjspath, 'g')
             let target_i = substitute(target_i, '%CLASS%', a:className, 'g')
             let target_i = substitute(target_i, '%CLASS_LOW%', classNameLow, 'g')
             let target_replace = add(target_replace, target_i)
@@ -214,7 +217,8 @@ function! jasminehelper#JasmineAdd(...)
         return
     endif
 
-    let dir = dir.g:jasmine_helper_test_js_dirname.'/_src'
+    let basedir = dir.g:jasmine_helper_test_js_dirname
+    let dir = basedir.'/_src'
     let cmd1 = 'cp -r '.dir.'/_template '
     let cmd2 = 'rm -rf '
     let makename = expand('%:r')
@@ -255,7 +259,7 @@ function! jasminehelper#JasmineAdd(...)
     call system(cmd1)
     call system(cmd2)
 
-    call jasminehelper#JasmineClassNameReplace(makename, srcfile)
+    call jasminehelper#JasmineClassNameReplace(basedir, makename, srcfile)
 
     exec 'vs '.makename.'/test.js'
 
