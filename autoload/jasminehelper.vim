@@ -249,7 +249,9 @@ function! jasminehelper#JasmineAdd(...)
 
     let srcfile = jasminehelper#JasmineTestPathReplace(dir.'/'.makename.'/test.js')
 
-    silent call mkdir(dir, 'p')
+    if !isdirectory(dir)
+        call mkdir(dir, 'p')
+    endif
 
     let cmd1 = cmd1.makename
     let cmd2 = cmd2.makename.'/.*'
