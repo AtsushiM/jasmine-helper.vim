@@ -270,7 +270,7 @@ endfunction
 
 function! jasminehelper#JasmineTemplate()
     let dir = jasminehelper#dirCheck(g:jasmine_helper_test_js_dirname)
-    let tempdir = dir.g:jasmine_helper_test_js_dirname.'/src/_template'
+    let tempdir = dir.g:jasmine_helper_test_js_dirname.'/_src/_template'
 
     if dir == '' || !isdirectory(tempdir)
         echo 'not find "'.tempdir.'" directory'
