@@ -242,14 +242,14 @@ function! jasminehelper#JasmineAdd(...)
     let dir = jasminehelper#removePathDot(dir)
     let dir = matchlist(dir, '\v(.*)/$')[1]
 
-    if isdirectory(dir)
+    if isdirectory(dir.'/'.makename)
         echo 'already maked "'.dir.'/'.makename.'" directory.'
         return
     endif
 
     let srcfile = jasminehelper#JasmineTestPathReplace(dir.'/'.makename.'/test.js')
 
-    call mkdir(dir, 'p')
+    silent call mkdir(dir, 'p')
 
     let cmd1 = cmd1.makename
     let cmd2 = cmd2.makename.'/.*'
