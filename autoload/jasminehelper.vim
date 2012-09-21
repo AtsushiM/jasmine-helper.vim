@@ -195,8 +195,11 @@ function! jasminehelper#JasmineListUpJS()
                 let listTest = add(listTest, '../_src/'.listi.'test.js'.'\n\')
 
                 let testFile = readfile(listi.'test.js')
+
                 let testPath = matchlist(testFile[0], '\v(.{-})"(.{-})"(.*)')
-                let listClass = add(listClass, testPath[2].'\n\')
+                let testPath = matchlist(testPath[2], '\v(.*)(/'.g:jasmine_helper_src_js_dirname.'/)(.{-})$')
+
+                let listClass = add(listClass, '../..'.testPath[2].testPath[3].'\n\')
             endif
         endif
     endfor
